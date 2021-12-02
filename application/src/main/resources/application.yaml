@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+spring:
+  data:
+    cassandra:
+      contact-points:
+        - cassandra
+      keyspace-name: example
+      local-datacenter: datacenter1

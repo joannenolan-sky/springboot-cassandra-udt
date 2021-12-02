@@ -1,0 +1,20 @@
+version: '2.1'
+services:
+  cassandra:
+    container_name: cassandra
+    image: cassandra:3.11.4
+    ports:
+      - 9042:9042
+    environment:
+      - CASSANDRA_START_RPC=true
+    healthcheck:
+      test: ["CMD-SHELL", "[ $$(nodetool statusbinary) = running ]"]
+      interval: 5s
+      retries: 10
+
+  cassandra-bootstrap-init:
+    build: cql-bootstrap
+    depends_on:
+       cassandra:
+         condition: service_healthy
+    restart: on-failure

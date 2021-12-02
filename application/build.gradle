@@ -1,0 +1,55 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'java'
+}
+
+jar {
+//    manifest {
+//        attributes 'Main-Class': 'com.example.consumer.Application'
+//    }
+    enabled = true
+}
+
+
+bootJar {
+    baseName = 'udt-application'
+    version = ''
+}
+
+springBoot {
+    buildInfo {
+        properties {
+            name = 'cassandra-udt'
+        }
+    }
+}
+
+dependencies {
+    implementation(
+            'org.springframework.boot:spring-boot-starter-web',
+            "org.springframework.boot:spring-boot-starter-actuator",
+            'io.micrometer:micrometer-registry-prometheus',
+            "com.google.code.findbugs:annotations:${versions.findbugs}",
+            "net.logstash.logback:logstash-logback-encoder:${versions.logbackEncoder}",
+
+            'io.micrometer:micrometer-core:1.7.0',
+            'com.datastax.oss:java-driver-metrics-micrometer:4.11.1',
+
+            'org.springframework.boot:spring-boot-starter-data-cassandra',
+
+
+    )
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versions.junitJupiter}"
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+    testImplementation(
+            "org.junit.jupiter:junit-jupiter:${versions.junitJupiter}"
+    )
+}
+
+test {
+    useJUnitPlatform()
+}
